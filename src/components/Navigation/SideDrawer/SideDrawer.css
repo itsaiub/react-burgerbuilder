@@ -9,7 +9,7 @@
   background: white;
   padding: 32px 16px;
   box-sizing: border-box;
-  transition: transform 0.3 ease-out;
+  transition: transform 5.5 ease-out;
 }
 
 @media (min-width: 500px) {
