@@ -17,7 +17,7 @@ const OrderSummary = ({ ingredients, price, purchaseCanceled, purshaseContinued 
       <p>A delicious burger with the following ingredients:</p>
       <ul>{ingredientsSummary}</ul>
       <p>
-        <strong>Total Price: {price.toFixed(2)}</strong>
+        <strong>Total Price: {price.toFixed(2)} $</strong>
       </p>
       <p>Continue to Checkout?</p>
       <Button clicked={purchaseCanceled} btnType="Danger">
