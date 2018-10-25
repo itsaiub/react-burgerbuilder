@@ -4,15 +4,15 @@ import Logo from "../../Logo/Logo";
 import NavigationItems from "../NavigationItems/NavigationItems";
 
 const Toolbar = props => {
-  return (
-    <header className="Toolbar">
+  return <header className="Toolbar">
       <div>MENU</div>
-      <Logo />
-      <nav>
+      <div className='Logo1'>
+        <Logo />
+      </div>
+    <nav className='DesktopOnly'>
         <NavigationItems />
       </nav>
-    </header>
-  );
+    </header>;
 };
 
 export default Toolbar;
