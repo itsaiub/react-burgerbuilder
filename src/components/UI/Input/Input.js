@@ -4,7 +4,7 @@ import "./Input.css";
 function Input(props) {
   let inputElement = null;
   const inputClasses = ["InputElement"];
-console.log(props);
+  console.log(props);
 
   if (props.invalid && props.shouldValidate && props.touched) {
     inputClasses.push("Invalid");
@@ -34,10 +34,7 @@ console.log(props);
 
     case "select":
       inputElement = (
-        <select
-          className={inputClasses.join(" ")}
-          onChange={props.changed}
-        >
+        <select className={inputClasses.join(" ")} onChange={props.changed}>
           {props.elementConfig.options.map(option => (
             <option key={option.value} value={option.value}>
               {option.displayValue}
