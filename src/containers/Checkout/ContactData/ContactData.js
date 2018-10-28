@@ -18,8 +18,6 @@ export class ContactData extends Component {
 
   orderHandler = e => {
     e.preventDefault();
-    console.log(this.props);
-
     this.setState({ loading: true });
     const order = {
       ingredients: this.props.ingredients,
