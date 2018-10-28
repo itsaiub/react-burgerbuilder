@@ -5,7 +5,7 @@ const Order = props => {
   return (
     <div className="Order">
       <p>Ingrediens: </p>
-      <p>Price: </p>
+      <p>Price: <strong>5</strong></p>
     </div>
   );
 };
