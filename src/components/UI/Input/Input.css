@@ -4,13 +4,13 @@
   box-sizing: border-box;
 }
 
-.Input .Label {
+.Label {
   font-weight: bold;
   display: block;
   margin-bottom: 8px;
 }
 
-.Input .InputElement {
+.InputElement {
   outline: none;
   border: 1px solid #ccc;
   background-color: white;
@@ -21,7 +21,12 @@
   box-sizing: border-box;
 }
 
-.Input .InputElement:focus {
+.InputElement:focus {
   outline: none;
   background-color: #ccc;
+}
+
+.Invalid {
+  border: 1px solid red;
+  background-color: #fda494;
 }

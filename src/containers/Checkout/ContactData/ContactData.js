@@ -133,8 +133,8 @@ export class ContactData extends Component {
       updatedFormElement.value,
       updatedFormElement.validation
     );
-    console.log(updatedFormElement);
-
+    console.log(updatedOrderForm);
+    
     this.setState({ orderForm: updatedOrderForm });
   };
 
@@ -147,23 +147,25 @@ export class ContactData extends Component {
       });
     }
 
-    let form = (
-      <form onSubmit={this.orderHandler}>
+    let form = <form onSubmit={this.orderHandler}>
         {formElementsArray.map(formElement => (
           <Input
             key={formElement.id}
             elementType={formElement.config.elementType}
             elementConfig={formElement.config.elementConfig}
             value={formElement.config.value}
-            changed={event => this.inputChangedHandler(event, formElement.id)}
+            invalid={!formElement.config.valid}
+            shouldValidate={formElement.config.validation}
+            changed={event =>
+              this.inputChangedHandler(event, formElement.id)
+            }
           />
         ))}
 
         <Button btnType="Success" clicked={this.orderHandler}>
           ORDER
         </Button>
-      </form>
-    );
+      </form>;
     if (this.state.loading) {
       form = <Spinner />;
     }
