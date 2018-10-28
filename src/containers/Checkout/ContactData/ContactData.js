@@ -129,10 +129,13 @@ export class ContactData extends Component {
     };
     updatedFormElement.value = event.target.value;
     updatedOrderForm[inputIndentifier] = updatedFormElement;
-    updatedFormElement.valid = this.checkValidity(
-      updatedFormElement.value,
-      updatedFormElement.validation
-    );
+    if(updatedFormElement.validation) {
+      updatedFormElement.valid = this.checkValidity(
+        updatedFormElement.value,
+        updatedFormElement.validation
+      );
+    }
+    
     console.log(updatedOrderForm);
     
     this.setState({ orderForm: updatedOrderForm });
