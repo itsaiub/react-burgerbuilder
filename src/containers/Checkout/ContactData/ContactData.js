@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 import axios from "../../../axios-orders";
 import Button from "../../../components/UI/Button/Button";
 import "./ContactData.css";
@@ -6,7 +7,101 @@ import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
 
 export class ContactData extends Component {
-         state = { orderForm: { name: { elementType: "input", elementConfig: { type: "text", placeholder: "Your Name" }, value: "", validation: { required: true }, valid: false, touched: false }, email: { elementType: "input", elementConfig: { type: "email", placeholder: "Your Email" }, value: "", validation: { required: true }, valid: false, touched: false }, phone: { elementType: "input", elementConfig: { type: "text", placeholder: "Your Phone Number" }, value: "", validation: { required: true }, valid: false, touched: false }, street: { elementType: "input", elementConfig: { type: "text", placeholder: "Street" }, value: "", validation: { required: true }, valid: false, touched: false }, postalCode: { elementType: "input", elementConfig: { type: "text", placeholder: "Postal Code" }, value: "", validation: { required: true, minLength: 4, maxLength: 6 }, valid: false, touched: false }, country: { elementType: "input", elementConfig: { type: "text", placeholder: "Country" }, value: "", validation: { required: true }, valid: false, touched: false }, deliveryMethod: { elementType: "select", elementConfig: { options: [{ value: "fastest", displayValue: "Fastest" }, { value: "cheapest", displayValue: "Cheapest" }] }, value: "fastest", validation: {}, valid: true } }, formIsValid: false, loading: false };
+         state = { 
+           orderForm: { 
+             name: { 
+               elementType: "input", 
+               elementConfig: { 
+                 type: "text", 
+                 placeholder: "Your Name" 
+                }, 
+                value: "", 
+                validation: { 
+                  required: true 
+                }, 
+                valid: false, 
+                touched: false 
+              }, 
+              email: { 
+                elementType: "input", 
+                elementConfig: { 
+                  type: "email", 
+                  placeholder: "Your Email" 
+                }, 
+                value: "", 
+                validation: { 
+                  required: true 
+                }, 
+                valid: false, 
+                touched: false 
+              }, 
+              phone: { 
+                elementType: "input", 
+                elementConfig: { 
+                  type: "text", 
+                  placeholder: "Your Phone Number" 
+                }, 
+                value: "", 
+                validation: { 
+                  required: true 
+                }, 
+                valid: false, 
+                touched: false 
+              }, 
+              street: { 
+                elementType: "input", 
+                elementConfig: { 
+                  type: "text", 
+                  placeholder: "Street" 
+                }, 
+                value: "", 
+                validation: { 
+                  required: true 
+                }, 
+                valid: false, 
+                touched: false 
+              }, 
+              postalCode: { 
+                elementType: "input", 
+                elementConfig: { 
+                  type: "text", 
+                  placeholder: "Postal Code" 
+                }, 
+                value: "", 
+                validation: { 
+                  required: true, 
+                  minLength: 4, 
+                  maxLength: 6 
+                }, 
+                valid: false, 
+                touched: false 
+              }, 
+              country: { 
+                elementType: "input", 
+                elementConfig: { 
+                  type: "text", 
+                  placeholder: "Country" 
+                }, 
+                value: "", 
+                validation: { 
+                  required: true 
+                }, valid: false, 
+                touched: false 
+              }, 
+              deliveryMethod: { 
+                elementType: "select", 
+                elementConfig: { 
+                  options: [
+                    { value: "fastest", displayValue: "Fastest" }, 
+                    { value: "cheapest", displayValue: "Cheapest" }] 
+                  }, 
+                  value: "fastest", 
+                  validation: {}, 
+                  valid: true 
+                } 
+              }, 
+              formIsValid: false, 
+              loading: false };
 
          orderHandler = event => {
            event.preventDefault();
@@ -17,7 +112,10 @@ export class ContactData extends Component {
              formData[formElementIndentifier] = this.state.orderForm[formElementIndentifier].value;
            }
 
-           const order = { ingredients: this.props.ingredients, price: this.props.price.toFixed(2), orderData: formData };
+           const order = { 
+             ingredients: this.props.ings, 
+             price: this.props.price.toFixed(2), 
+             orderData: formData };
 
            axios
              .post("/orders.json", order)
@@ -103,4 +201,11 @@ export class ContactData extends Component {
          }
        }
 
-export default ContactData;
+const mapStateToProps = state => {
+  return { 
+    ings: state.ingredients, 
+    price: state.totalPrice 
+  };
+};
+
+export default connect(mapStateToProps)(ContactData);
