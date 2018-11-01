@@ -3,6 +3,7 @@ import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
 import * as authActions from "../../store/actions/index";
 import { connect } from "react-redux";
+import Spinner from '../../components/UI/Spinner/Spinner'
 import "./Auth.css";
 
 export class Auth extends Component {
@@ -34,7 +35,7 @@ export class Auth extends Component {
       isValid = value.trim() !== "" && isValid;
     }
     if (rules.isEmail) {
-      const pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       isValid = pattern.test(value) && isValid;
     }
     if (rules.isNumeric) {
@@ -90,7 +91,7 @@ export class Auth extends Component {
       });
     }
 
-    const form = formElementsArray.map(formElement => (
+    let form = formElementsArray.map(formElement => (
       <Input
         key={formElement.id}
         elementType={formElement.config.elementType}
@@ -103,8 +104,20 @@ export class Auth extends Component {
       />
     ));
 
+    if(this.props.loading) {
+      form = <Spinner />
+    }
+
+    let errorMessage = null;
+    if(this.props.error) {
+      errorMessage = (
+        <p>{this.props.error.message}</p>
+      )
+    }
+
     return (
       <div className="Auth">
+        {errorMessage}
         <form onSubmit={this.submitHandler}>
           {form}
           <Button btnType="Success">SUBMIT</Button>
@@ -117,6 +130,13 @@ export class Auth extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    loading: state.auth.loading,
+    error: state.auth.error
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
     onAuth: (email, password, isSignup) => dispatch(authActions.auth(email, password, isSignup))
@@ -124,6 +144,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Auth);
