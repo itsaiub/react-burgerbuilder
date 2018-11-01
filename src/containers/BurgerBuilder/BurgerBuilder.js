@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import * as burgerBuilderActions from '../../store/actions/index'
+import * as burgerBuilderActions from "../../store/actions/index";
 import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
@@ -11,12 +11,12 @@ import withErrorHandler from "../../components/withErrorHandler/withErrorHandler
 
 class BurgerBuilder extends Component {
   state = {
-    purchasing: false,
+    purchasing: false
   };
 
   componentDidMount() {
     console.log(this.props);
-    this.props.onInitIngredients()
+    this.props.onInitIngredients();
   }
 
   updatePurchaseState = ingredients => {
@@ -27,12 +27,15 @@ class BurgerBuilder extends Component {
       .reduce((sum, cur) => {
         return sum + cur;
       }, 0);
-   return sum > 0;
+    return sum > 0;
   };
 
-
   purchaseHandler = () => {
-    this.setState({ purchasing: true });
+    if (this.props.isAuth) {
+      this.setState({ purchasing: true });
+    } else {
+      this.props.history.push("/auth");
+    }
   };
 
   purchaseCancelHandler = () => {
@@ -40,7 +43,7 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    this.props.history.push('/checkout');
+    this.props.history.push("/checkout");
   };
 
   render() {
@@ -69,6 +72,7 @@ class BurgerBuilder extends Component {
             purchasable={this.updatePurchaseState(this.props.ings)}
             price={this.props.price}
             ordered={this.purchaseHandler}
+            isAuth={this.props.isAuth}
           />
         </React.Fragment>
       );
@@ -82,7 +86,7 @@ class BurgerBuilder extends Component {
         />
       );
     }
-  
+
     return (
       <React.Fragment>
         <Modal
@@ -98,18 +102,25 @@ class BurgerBuilder extends Component {
 }
 
 const mapStateToProps = state => {
-  return { 
-    ings: state.burgerBuilder.ingredients, 
-    price: state.burgerBuilder.totalPrice, 
-    error: state.burgerBuilder.error };
-}
+  return {
+    ings: state.burgerBuilder.ingredients,
+    price: state.burgerBuilder.totalPrice,
+    error: state.burgerBuilder.error,
+    isAuth: state.auth.token !== null
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
-    onIngredientAdded: (ingName) => dispatch(burgerBuilderActions.addIngredient(ingName)),
-    onIngredientRemoved: (ingName) => dispatch(burgerBuilderActions.removeIngredient(ingName)),
+    onIngredientAdded: ingName =>
+      dispatch(burgerBuilderActions.addIngredient(ingName)),
+    onIngredientRemoved: ingName =>
+      dispatch(burgerBuilderActions.removeIngredient(ingName)),
     onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients())
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withErrorHandler(BurgerBuilder, axios));
